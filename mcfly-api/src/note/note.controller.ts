@@ -23,7 +23,7 @@ export class NoteController {
     }
 
     @Get('/')
-    async allUsers(@Res() res) {
+    async allNotes(@Res() res) {
         let notes;
         try {
             notes = await this.noteService.getNotes();

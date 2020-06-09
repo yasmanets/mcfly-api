@@ -13,7 +13,6 @@ export class NoteController {
     @Post('/')
     async createNote(@Body() note: NoteDTO, @Res() res) {
         let newNote;
-        console.log(note);
         try {
             newNote = await this.noteService.createNote(note);
         } catch (error) {

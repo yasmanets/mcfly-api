@@ -23,4 +23,14 @@ export class NoteService {
         }
         return newNote;
     }
+
+    async getNotes(): Promise<Note[]> {
+        let notes;
+        try {
+            notes = await this.noteModel.find();
+        } catch (error) {
+            throw new Error('Getting all notes');
+        }
+        return notes;
+    }
 }

@@ -1,5 +1,4 @@
-import { Note } from 'src/note/interface/note.interface';
-import { Controller, Post, Body, Res, HttpStatus, Get } from '@nestjs/common';
+import { Controller, Post, Body, Res, HttpStatus, Get, Param } from '@nestjs/common';
 import { NoteService } from './note.service';
 import { NoteDTO } from './dto/note.dto';
 
@@ -32,5 +31,14 @@ export class NoteController {
         return res.status(HttpStatus.OK).json({ notes });
     }
 
-
+    @Get('/:id')
+    async noteById(@Res() res, @Param('id') userId) {
+        let note;
+        try {
+            note = await this.noteService.getNoteById(userId);
+        } catch (error) {
+            return res.status(HttpStatus.SERVICE_UNAVAILABLE).json({ message: `${error}`});
+        }
+        return res.status(HttpStatus.OK).json({ note });
+    }
 }

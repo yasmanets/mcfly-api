@@ -8,7 +8,6 @@ import { NoteDTO } from './dto/note.dto';
 export class NoteService {
     constructor(
         @InjectModel('Note') readonly noteModel: Model<Note>,
-        //readonly userService: UserService,
     ) {}
 
     async createNote(note: NoteDTO): Promise<Note> {
@@ -32,5 +31,15 @@ export class NoteService {
             throw new Error('Getting all notes');
         }
         return notes;
+    }
+
+    async getNoteById(noteId: string): Promise<Note> {
+        let note;
+        try {
+            note = await this.noteModel.findById(noteId);
+        } catch (error) {
+            throw new Error(`Getting note: ${noteId}`);
+        }
+        return note;
     }
 }

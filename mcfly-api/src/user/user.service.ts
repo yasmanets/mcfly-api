@@ -34,4 +34,14 @@ export class UserService {
         }
         return users;
     }
+
+    async getUserById(userId: string): Promise<User> {
+        let user;
+        try {
+            user = await this.userModel.findById(userId);
+        } catch (error) {
+            throw new Error(`Getting user: ${userId}`);
+        }
+        return user;
+    }
 }

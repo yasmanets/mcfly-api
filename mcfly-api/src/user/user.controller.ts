@@ -1,4 +1,4 @@
-import { Controller, Post, Res, Body, HttpStatus, Get, Param } from '@nestjs/common';
+import { Controller, Post, Res, Body, HttpStatus, Get, Param, Put } from '@nestjs/common';
 import { UserService } from './user.service';
 import { UserDTO } from './dto/user.dto';
 
@@ -38,6 +38,18 @@ export class UserController {
             user = await this.userService.getUserById(userId);
         } catch (error) {
             return res.status(HttpStatus.SERVICE_UNAVAILABLE).json({ message: `${error}`});
+        }
+        return res.status(HttpStatus.OK).json({ user });
+    }
+
+    @Put('/:id')
+    async markNoteAsFavorite(@Body() body, @Res() res, @Param('id') userId) {
+        let user;
+        const noteId = body.noteId;
+        try {
+            user = await this.userService.markNoteAsFavorite(userId, noteId);
+        } catch (error) {
+            return res.status(HttpStatus.SERVICE_UNAVAILABLE).json({ message: `When adding to favorites: ${error}`});
         }
         return res.status(HttpStatus.OK).json({ user });
     }

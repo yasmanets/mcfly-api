@@ -44,4 +44,27 @@ export class UserService {
         }
         return user;
     }
+
+    async markNoteAsFavorite(userId: string, noteId: string): Promise<User> {
+        let user
+        try {
+            user = await this.userModel.findById(userId);
+        } catch (error) {
+            throw new Error(`Getting user: ${userId}`);
+        }
+        let note;
+        try {
+            note = await this.noteService.getNoteById(noteId);
+        } catch (error) {
+            throw new Error(`Getting note: ${noteId}`);
+        }
+        user.favoriteNotes.push(noteId);
+        let newUser;
+        try {
+            newUser = await user.save();
+        } catch (error) {
+            throw new Error('Saving the new user');
+        }
+        return newUser;
+    }
 }

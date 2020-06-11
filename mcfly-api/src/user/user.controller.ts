@@ -34,7 +34,6 @@ export class UserController {
     @Get('/:id')
     async userById(@Res() res, @Param('id') userId) {
         let user;
-        console.log(userId);
         try {
             user = await this.userService.getUserById(userId);
         } catch (error) {

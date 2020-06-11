@@ -53,4 +53,15 @@ export class UserController {
         }
         return res.status(HttpStatus.OK).json({ user });
     }
+
+    @Get('/:id/favorites')
+    async getFavoriteNotes(@Res() res, @Param('id') userId) {
+        let notes = [];
+        try {
+            notes = await this.userService.getFavoriteNotes(userId);
+        } catch (error) {
+            return res.status(HttpStatus.SERVICE_UNAVAILABLE).json({ message: `Getting favorite notes: ${error}`});
+        }
+        return res.status(HttpStatus.OK).json({ notes });
+    }
 }

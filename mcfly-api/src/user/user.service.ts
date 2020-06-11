@@ -4,6 +4,7 @@ import { Injectable } from '@nestjs/common';
 import { Model } from 'mongoose';
 import { InjectModel } from '@nestjs/mongoose';
 import { NoteService } from 'src/note/note.service';
+import { Note } from 'src/note/interface/note.interface';
 
 @Injectable()
 export class UserService {
@@ -66,5 +67,25 @@ export class UserService {
             throw new Error('Saving the new user');
         }
         return newUser;
+    }
+
+    async getFavoriteNotes(userId: string): Promise<Note[]> {
+        let user: User;
+        try {
+            user = await this.userModel.findById(userId);
+        } catch (error) {
+            throw new Error(`Getting user: ${userId}`);
+        }
+        let notes: Note[] = [];
+        let note;
+        for (const noteId of user.favoriteNotes) {
+            try {
+                note = await this.noteService.getNoteById(noteId);
+            } catch (error) {
+                throw new Error(`Getting note: ${noteId}`);
+            }
+            notes.push(note);
+        }
+        return notes;
     }
 }
